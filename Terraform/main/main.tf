@@ -36,10 +36,10 @@ module "EC2_Control" {
   subnet_id  = module.vpc.Control_subnet_id
   key_name   = module.KP.key_name
   #user_data  = local.ansible_install_user_data
-  user_data = base64encode(templatefile("${local.ansible_install_user_data}", {
+  user_data = templatefile("${local.ansible_install_user_data}", {
         app1_ip = module.ec2_app1.Private_IP
         app2_ip = module.ec2_app2.Private_IP
-      }))
+      })
   }
 
 module "ec2_app1" {
