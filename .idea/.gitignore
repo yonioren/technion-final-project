@@ -1,0 +1,13 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+.terraform/
+.terraformrc
+*.tfstate
+*.tfstate.*
+*.tfvars
+*.tfvars.json
+override.tf
+override.tf.json
+*.tfplan
+.terraform.lock.hcl
