@@ -30,7 +30,7 @@ resource "aws_lb_target_group" "target_elb" {
   protocol = "HTTP"
   vpc_id   = module.vpc.vpc_id
   health_check {
-    path     = "/health"
+    path     = "/"
     port     = 8666
     protocol = "HTTP"
   }
