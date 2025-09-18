@@ -1,4 +1,4 @@
-resource "terraform_data" "copy_KP1_to_control" {
+resource "terraform_data" "copy_KP_to_control" {
     depends_on = [  module.EC2_Control,                 # Just in case
                     module.KP ]
     input = {
@@ -12,20 +12,31 @@ resource "terraform_data" "copy_KP1_to_control" {
             user        = "ubuntu"
             private_key = module.KP.private_key_pem
             host        = module.EC2_Control.Public_IP
+        }
     }
-  }
+    provisioner "file" {
+        source      = "${path.root}/../ansible/run_project_planner.yml"
+        destination = "/tmp/run_project_planner.yml"
+        connection {
+            type        = "ssh"
+            user        = "ubuntu"
+            private_key = module.KP.private_key_pem
+            host        = module.EC2_Control.Public_IP
+        }
+    }
     provisioner "remote-exec" {
         inline = [
             "chmod 0400 /home/ubuntu/KP.pem",
-            "chown ubuntu:ubuntu /home/ubuntu/KP.pem"
+            "chown ubuntu:ubuntu /home/ubuntu/KP.pem",
+            "bash -c \"/usr/bin/ansible-playbook /tmp/run_project_planner.yml\""
         ]
        connection {
             type        = "ssh"
             user        = "ubuntu"
             private_key = module.KP.private_key_pem
             host        = module.EC2_Control.Public_IP
+       }
     }
-  }
 }
 
 

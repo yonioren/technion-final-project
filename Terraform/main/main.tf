@@ -1,7 +1,7 @@
 module "KP" {
   source        = "../modules/keypair"
   providers     = { aws = aws }
-  key_name      = "KP1"
+  key_name      = "KP"
 }
 
 resource "local_sensitive_file" "keypair_KP" {
@@ -33,14 +33,14 @@ module "EC2_Control" {
                   module.KP ]
                   
   EC2_Name   = "Control_EC2"
-  private_ip = "${module.vpc.Control_Subnet_Prefix}.11"    #Changed from 111 to 11
+  #private_ip = "${module.vpc.Control_Subnet_Prefix}.11"    #Changed from 111 to 11
   type       = var.instance_type
   ami        = var.ec2_image_id_public
   sg_id      = module.vpc.Control_sg_id
   subnet_id  = module.vpc.Control_subnet_id
   key_name   = module.KP.key_name
   #user_data  = local.ansible_install_user_data
-  user_data = templatefile("${local.ansible_install_user_data}", {
+  user_data = templatefile(local.ansible_install_user_data, {
         app1_ip = module.ec2_app1.Private_IP
         app2_ip = module.ec2_app2.Private_IP
       })

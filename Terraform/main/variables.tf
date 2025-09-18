@@ -8,5 +8,5 @@ variable "instance_type" {}
 
 
 locals {
-  ansible_install_user_data = file("${path.module}/../ansible/user_data.sh")
+  ansible_install_user_data = "${path.root}/../ansible/user_data.sh"
 }

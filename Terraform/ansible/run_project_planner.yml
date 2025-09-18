@@ -1,0 +1,48 @@
+---
+- name: Get code, prepare hosts and run project planner
+  hosts: apps
+  become: yes
+  vars:
+    repo_url: "https://github.com/yonioren/Midterm-for-technion.git"
+    dest_dir: "/opt/projectplanner"
+    python_dir: "{{ dest_dir }}/Python"
+    python_source_dir: "{{ python_dir }}/source"
+    venv_path: "{{dest_dir}}/venv"
+    python_script: "main.py"
+
+  tasks:
+    - name: Install packages
+      become: yes
+      package:
+        name: "{{ item }}"
+        state: present
+        update_cache: yes
+      loop:
+        - git
+        - python3
+        - python3-venv
+        - python3-pip
+
+    - name: git clone projectplanner repo
+      git:
+        repo: "{{ repo_url }}"
+        dest: "{{ dest_dir }}"
+        version: HEAD
+        force: yes
+
+    - name: python venv to run code
+      command: python3 -m venv "{{ venv_path }}"
+      args:
+        creates: "{{ venv_path }}/bin/activate"
+
+    - name: install flask
+      pip:
+        requirements: "{{ python_dir }}/requirements.txt"
+        virtualenv: "{{ venv_path }}"
+        virtualenv_command: python3 -m venv
+
+    - name: run python in background
+      shell: |
+        nohup {{ venv_path }}/bin/python {{ python_source_dir }}/{{ python_script }} &
+      args:
+        chdir: "{{ python_source_dir }}"
