@@ -45,3 +45,12 @@ output "Managed_sg_id" {
 output "Control_sg_id" {
   value = aws_security_group.Control_SG.id
 }
+
+# LB subnets
+output "LB_SUB1_id" {
+  value = aws_subnet.LB_PUB1.id
+}
+
+output "LB_SUB2_id" {
+  value = aws_subnet.LB_PUB2.id
+}

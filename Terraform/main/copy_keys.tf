@@ -1,3 +1,8 @@
+# After the Ansible machine is created
+# Copy SSH keys of the app servers
+# Copy the ansible playbook
+# Make sure everything is set before running the playbook
+
 resource "terraform_data" "copy_KP_to_control" {
     depends_on = [  module.EC2_Control,                 # Just in case
                     module.KP ]
@@ -28,7 +33,7 @@ resource "terraform_data" "copy_KP_to_control" {
         inline = [
             "chmod 0400 /home/ubuntu/KP.pem",
             "chown ubuntu:ubuntu /home/ubuntu/KP.pem",
-            "bash -c \"/usr/bin/ansible-playbook /tmp/run_project_planner.yml\""
+            "bash -c \"until test -f /tmp/finished_userdata &>/dev/null; do sleep 1; done; ansible-playbook /tmp/run_project_planner.yml\""
         ]
        connection {
             type        = "ssh"
