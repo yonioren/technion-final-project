@@ -16,7 +16,7 @@ resource "tls_private_key" "key" {
 }
 
 
-resource "aws_key_pair" "KP1" {
+resource "aws_key_pair" "KP" {
   key_name   = var.key_name
   public_key = tls_private_key.key.public_key_openssh
 }

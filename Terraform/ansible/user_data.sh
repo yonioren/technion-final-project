@@ -1,4 +1,6 @@
 #!/bin/bash
+
+### Ansible installation
 add-apt-repository universe
 apt update
 apt install -y ansible
@@ -14,6 +16,11 @@ ${app2_ip} app2
 
 EOF
 
+# Create ansible.cfg file
+cat <<EOF > /etc/ansible/ansible.cfg
+[defaults]
+inventory = /etc/ansible/hosts
+EOF
 
 # Create Ansible hosts file (Inventory)
 cat <<EOF > /etc/ansible/hosts
@@ -24,22 +31,10 @@ app2
 [apps:vars]
 ansible_user=ubuntu
 ansible_ssh_private_key_file=/home/ubuntu/KP.pem
-ansible_python_interpreter=/usr/libexec/platform-python
 
 [all:vars] #Ignore ssh fingerprints
 ansible_ssh_common_args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'
 EOF
 
-# Create ansible.cfg file
-cat <<EOF > /etc/ansible/ansible.cfg
-[defaults]
-inventory = /etc/ansible/hosts
-EOF
-
-
-######### git clone
-######### copy files
-######### run ansible
-############### installations
-############### git clone
-############### run app
+### Flag to prevent race
+touch /tmp/finished_userdata
