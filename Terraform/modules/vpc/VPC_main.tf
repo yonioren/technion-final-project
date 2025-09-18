@@ -93,16 +93,10 @@ resource "aws_security_group" "Managed_SG" {
     cidr_blocks = [aws_vpc.VPC.cidr_block]
   }
   ingress {
-    from_port   = 80
-    to_port     = 80
+    from_port   = 8666
+    to_port     = 8666
     protocol    = "tcp"
-    cidr_blocks = [aws_vpc.VPC.cidr_block]
-  }
-  ingress {
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = [aws_vpc.VPC.cidr_block]
+    security_groups = var.LB_SG_ID ? "" : [var.LB_SG_ID]
   }
 
   egress {

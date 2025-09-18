@@ -30,4 +30,8 @@ variable "source_ip" {
   type        = string
 }
 
+variable "LB_SG_ID" {
+  description = "SG of LB to allow access to instance"
+  default = ""
+}
 

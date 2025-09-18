@@ -32,6 +32,7 @@ variable "EC2_Name" {
 variable "private_ip" {
   description = "The private IP for the EC2 instance"
   type        = string
+  default = ""
 }
 
 variable "user_data" {
